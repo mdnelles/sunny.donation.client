@@ -1,0 +1,85 @@
+body {
+  font-family: sans-serif;
+}
+.defaultBox {
+    width:100%;
+    padding:8px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border: 1px solid #eeeeee;
+}
+.layoutBox {
+    width:100%;
+    padding:8px;
+    border: 1px solid #eeeeee;
+}
+.sideB {
+  display:inline-block;
+  border-radius: 3px;
+  padding:8px;
+  border: 1px solid #eeeeee;
+  width:49%;
+  margin:2px;
+  vertical-align: top;
+  overflow-x:hide;
+  overflow-y:scroll;
+}
+/* hide div scrollbar back */
+div::-webkit-scrollbar {
+    /*width: 0px;*/
+    background: transparent;
+}
+.greenBack {
+  background-color:#ebffdb;
+}
+.greyBack {
+  background-color:#555555;
+  
+}
+.blueBack {
+  background-color: #0081c8;
+}
+  .container {
+    position: relative;
+  }
+  
+  
+  /* This fires as soon as the element enters the dorm */
+  .list-transition-enter,
+  .list-transition-appear {
+    /*We give the list the initial dimension of the list button*/
+    top: 250;
+    border:#dddddd;
+    max-height: 40px;
+    color: transparent;
+  }
+  /* This is where we can add the transition*/
+  .list-transition-enter-active,
+  .list-transition-appear-active {
+    top: 0px;
+    border:#ffffff;
+    max-height: 500px;
+    transition: all 400ms;
+  }
+  
+  /* This fires as soon as lastActive is false */
+  .list-transition-exit {
+    top: 0px;
+    max-height: 200px;
+  }
+  /* fires as element leaves the DOM*/
+  .list-transition-exit-active {
+    top: 0px;
+
+    max-height: 40px;
+    color: transparent;
+    transition: all 400ms;
+  }
+  
+
+  .blue {
+    background-color: #009;
+  }
+  .lgGray {
+    background-color: #efefef;
+  }

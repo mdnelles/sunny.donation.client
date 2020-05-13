@@ -1,0 +1,17 @@
+FROM node:13
+
+RUN mkdir -p /srv/app/client
+WORKDIR /srv/app/client
+
+COPY package.json /srv/app/client/package.json
+COPY package-lock.json /srv/app/client/package-lock.json
+
+#RUN npm install
+COPY . /srv/app/client
+RUN npm install --silent
+RUN npm install react-scripts@3.0.1 -g --silent
+
+EXPOSE 3000
+
+CMD [ "npm", "start" ]
+#CMD [ "npm", "run", "start" ]
