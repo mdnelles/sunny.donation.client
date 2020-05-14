@@ -150,8 +150,8 @@ export const Users = () => {
                Add User
             </Button>
          </ButtonGroup>
-         <div className={"p-3 my-2 rounded " + toastVisibility}>
-            <Toast>
+         <div className={"p-1 rounded " + toastVisibility}>
+            <Toast style={{ marginTop: 25 }}>
                <ToastHeader>CMS Users</ToastHeader>
                <ToastBody>
                   This controls the CMS user administration for this
@@ -160,11 +160,10 @@ export const Users = () => {
             </Toast>
          </div>
          <br />
-         <br />
          <div className='globalShad'>
             <Table striped>
                <thead>
-                  <tr>
+                  <tr style={{ backgroundColor: "#bdddff" }}>
                      <th>First Name</th>
                      <th>Last Name</th>
                      <th>Email</th>

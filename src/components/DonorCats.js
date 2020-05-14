@@ -27,8 +27,15 @@ const Loading = (props) => {
    );
 };
 
-const DonorCat = (props) => {
-   let tid = props.title; //.replace(/\D/g,'');
+const DonorRow = (props) => {
+   let tid = props.title,
+      actual = ""; //.replace(/\D/g,'');
+   if (props.title !== undefined) {
+      actual = parseInt(props.title.toString().replace("lifetime", ""))
+         .toLocaleString("en-US", { style: "currency", currency: "CND" })
+         .replace("CND", "");
+   }
+
    let title = props.title
       .toString()
       .replace("2500000", "2.5M")
@@ -39,28 +46,16 @@ const DonorCat = (props) => {
       .replace("000", "K")
       .replace("lifetime", "");
    return (
-      <div style={{ marginBottom: 5 }}>
-         <div className='toastWrapper'>
-            <div className='toastTitleBar'>
-               <div className='leftToastTitle'>{title}</div>
-               <div className='rightToastTitle'>
-                  <p align='right'>
-                     <img
-                        src='./img/icon_blue_edit.png'
-                        style={{ width: 40, height: 28 }}
-                     />
-                  </p>
-               </div>
-            </div>
-            <div className='toastBody'>
-               <ul>
-                  <li># of Entries: {props.count}</li>
-                  <li>Last edited: {props.date}</li>
-                  <li>Edited By: Admin</li>
-               </ul>
-            </div>
-         </div>
-      </div>
+      <tr key={props.title}>
+         <td>{title}</td>
+         <td>${actual}</td>
+         <td>{props.count}</td>
+         <td>{props.date}</td>
+         <td>Admin</td>
+         <td>
+            <Button color='primary'>Donor List </Button>
+         </td>
+      </tr>
    );
 };
 
@@ -68,7 +63,7 @@ const AllDonorCats = (props) => {
    return (
       <React.Fragment>
          {props.donorCats.map((dc) => (
-            <DonorCat
+            <DonorRow
                author={dc.author}
                date={dc.date}
                count={dc.count}
@@ -83,9 +78,46 @@ const AllDonorCats = (props) => {
 export const DonorCats = () => {
    const [donorCats, setDonorCats] = useState([]),
       [thetoken, setThetoken] = useState("Token not Set"),
+      [modal, setModal] = useState(false),
       [toastVisibility, setToastVisibility] = useState("displayNone"),
-      [msgVisible, setMsgVisible] = useState("visible"),
-      butClick = (e) => (window.location.href = "/getdonors/" + e.target.id);
+      [msgVisible, setMsgVisible] = useState("visible");
+
+   const butClick = (e) =>
+      (window.location.href = "/getdonorCats/" + e.target.id);
+
+   const toggle = () => {
+      setModal(!modal);
+   };
+
+   const addDonorCatStart = (data) => {
+      alert("fearture not available for demo");
+      //setDonorCats([...users, data]);
+   };
+
+   const removeDonorStart = (theUuid) => {
+      alert("Feature not available in demo version");
+      /*
+      if (window.confirm("Are you sure you want to delete this?")) {
+
+         if (theUuid !== undefined) {
+            localForage
+               .getItem("token", (err, theToken) => {
+                  removeDonor(theUuid, theToken)
+                     .then((res) => {
+                        setUsers(users.filter((user) => user.uuid !== theUuid));
+                     })
+                     .catch((err) => {
+                        console.log("Err: could not remove user " + err);
+                     });
+               })
+               .catch(() => {
+                  window.location.href = "/"; // no token
+               });
+         }
+      } else {
+         return false;
+      }*/
+   };
 
    const toastToggle = () => {
       toastVisibility === "displayNone"
@@ -103,9 +135,9 @@ export const DonorCats = () => {
                   getDonorCats(thetoken).then((data) => {
                      setDonorCats(data); // state is changed here - now will repaint
                      // add listener to each of the clicked edit icons
-                     var c = document.getElementsByClassName("dgroup");
-                     for (var i = 0; i < c.length; i++)
-                        c[i].addEventListener("click", butClick, false);
+                     //var c = document.getElementsByClassName("dgroup");
+                     //for (var i = 0; i < c.length; i++)
+                     //   c[i].addEventListener("click", butClick, false);
                   });
                });
             }
@@ -115,28 +147,47 @@ export const DonorCats = () => {
 
    return (
       <div className='appBody'>
-         <h4>Donor Catagories</h4>
+         <h4>Donor Categories</h4>
          <ButtonGroup size='sm' color='primary'>
             <Button color='primary' onClick={() => toastToggle()}>
                Info
             </Button>
+            <Button color='primary' onClick={() => toggle()}>
+               Add User
+            </Button>
          </ButtonGroup>
-         <div className={"p-3 my-2 rounded " + toastVisibility}>
-            <Toast>
+         <div className={"p-1 rounded " + toastVisibility}>
+            <Toast style={{ marginTop: 25 }}>
                <ToastHeader>Donor Categories</ToastHeader>
                <ToastBody>
-                  Donors are grouped in categories based on monetary
+                  DonorCats are grouped in categories based on monetary
                   contributions. You can click the edit icon in each box to
                   query respectively.
                </ToastBody>
             </Toast>
          </div>
          <br />
-         <Loading msgVisible={msgVisible} />
-         <br />
-         <div className='p-3  my-2 rounded'>
-            {/*<ModalUploadCsv thetoken={thetoken}/>*/}
-            <AllDonorCats donorCats={donorCats} thetoken={thetoken} />
+         <div className='globalShad'>
+            <Table striped>
+               <thead>
+                  <tr style={{ backgroundColor: "#bdddff" }}>
+                     <th>Category</th>
+                     <th>Actual</th>
+                     <th>Count</th>
+                     <th>Time</th>
+                     <th>Admin</th>
+                     <th>Delete</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <AllDonorCats
+                     donorCats={donorCats}
+                     removeDonorStart={removeDonorStart}
+                  />
+               </tbody>
+            </Table>
+
+            <Loading msgVisible={msgVisible} />
          </div>
       </div>
    );

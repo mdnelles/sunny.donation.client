@@ -122,10 +122,18 @@ export const Landing = () => {
                         href='https://sunnybrook.ca/foundation/'
                         target='_blank'
                      >
-                        <img src='/img/sunnybrook_foundation_white2.png' />
+                        <img
+                           src='/img/sunnybrook_foundation_white2.png'
+                           style={{ maxWidth: "98%", height: "auto" }}
+                        />
                      </a>
 
-                     <h3>CMS System</h3>
+                     <p
+                        align='center'
+                        style={{ fontSize: "1.5em", color: "#fff" }}
+                     >
+                        CMS System
+                     </p>
                   </div>
                </div>
             </div>
