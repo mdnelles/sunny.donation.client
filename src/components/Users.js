@@ -97,20 +97,24 @@ export const Users = () => {
    };
 
    const removeUserStart = (theUuid) => {
-      if (theUuid !== undefined) {
-         localForage
-            .getItem("token", (err, theToken) => {
-               removeUser(theUuid, theToken)
-                  .then((res) => {
-                     setUsers(users.filter((user) => user.uuid !== theUuid));
-                  })
-                  .catch((err) => {
-                     console.log("Err #105 could not remove user " + err);
-                  });
-            })
-            .catch(() => {
-               window.location.href = "/"; // no token
-            });
+      if (window.confirm("Are you sure you want to delete this?")) {
+         if (theUuid !== undefined) {
+            localForage
+               .getItem("token", (err, theToken) => {
+                  removeUser(theUuid, theToken)
+                     .then((res) => {
+                        setUsers(users.filter((user) => user.uuid !== theUuid));
+                     })
+                     .catch((err) => {
+                        console.log("Err: could not remove user " + err);
+                     });
+               })
+               .catch(() => {
+                  window.location.href = "/"; // no token
+               });
+         }
+      } else {
+         return false;
       }
    };
 
@@ -157,7 +161,7 @@ export const Users = () => {
          </div>
          <br />
          <br />
-         <div className='part-screen__container flex_container_column'>
+         <div className='globalShad'>
             <Table striped>
                <thead>
                   <tr>

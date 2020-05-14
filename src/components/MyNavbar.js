@@ -38,25 +38,17 @@ export const MyNavbar = () => {
    };
 
    return (
-      <div className='header__container flex_container_row' id='navWrapper'>
+      <div>
          <div style={{ width: "100%" }}>
-            <Navbar
-               color='faded'
-               light
-               expand='md'
-               style={{ height: 60, width: "100%" }}
-            >
+            <Navbar color='light' light expand='md'>
                <NavbarToggler onClick={toggle} />
                <Collapse isOpen={isOpen} navbar>
-                  <Nav className='mr-auto' navbar>
+                  <Nav className='mr-auto' navbar bg='light'>
                      <NavItem>
                         <NavLink href='/donor_cats'>Donors</NavLink>
                      </NavItem>
                      <NavItem>
                         <NavLink href='/playlists'>Playlists</NavLink>
-                     </NavItem>
-                     <NavItem>
-                        <NavLink href='/donor_cats'>Donors</NavLink>
                      </NavItem>
                      <NavItem>
                         <NavLink href='/users'>User</NavLink>

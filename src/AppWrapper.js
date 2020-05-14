@@ -57,7 +57,7 @@ export const AppWrapper = () => {
          <div>
             <MyNavbar />
             <Navleft />
-            <div className='appHolder outlines'>
+            <div className='appHolder '>
                <Route exact path='/register' component={Register} />
                <Route exact path='/getdonors' component={Donors} />
                <Route exact path='/getdonors/:qry' component={Donors} />

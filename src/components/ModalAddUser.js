@@ -60,8 +60,10 @@ const AddUserForm = (props) => {
             .getItem("token", function (err, theToken) {
                register(newUser, theToken)
                   .then((res) => {
+                     console.log(res);
                      if (res.data.error === undefined) {
                         props.addUserStart(newUser);
+                        props.toggle();
                         //();
                      } else {
                         document.getElementById("errmsg").style.visibility =
@@ -149,7 +151,10 @@ export const ModalAddUser = (props) => {
             className={className}
          >
             <ModalHeader toggle={() => props.toggle()}> Add User</ModalHeader>
-            <AddUserForm />
+            <AddUserForm
+               addUserStart={props.addUserStart}
+               toggle={props.toggle}
+            />
             <ModalFooter>
                <Button color='danger' onClick={() => props.toggle()}>
                   Cancel

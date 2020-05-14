@@ -16,7 +16,7 @@ class App extends Component {
       );
 
       return (
-         <div className='App'>
+         <div>
             <Router>
                <Switch>
                   <Route exact path='/' component={LoginContainer} />
