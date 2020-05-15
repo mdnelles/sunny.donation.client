@@ -8,7 +8,7 @@ import {
    deleteGroupFunct,
    updateKey,
 } from "./DonorFunctions";
-import { sizeSideBar } from "./_sharedFunctions";
+import { MyToast } from "./widgets/MyToast";
 import arraySort from "array-sort";
 import { ModalAddDonor } from "./ModalAddDonor";
 import {
@@ -20,9 +20,6 @@ import {
    Col,
    Spinner,
    Table,
-   Toast,
-   ToastHeader,
-   ToastBody,
 } from "reactstrap";
 import localForage from "localforage";
 
@@ -233,6 +230,7 @@ export const Donors = () => {
       [donorArr2, setDonorArr2] = useState([]),
       [searchLetter, setSearchLetter] = useState(false),
       [txtDonor, setTxtDonor] = useState(""),
+      [coAmount, setCoAmount] = useState(0),
       [arrowVisClass, setArrowVisClass] = useState("displayBlock"),
       [txtLetter, setTxtLetter] = useState(""),
       [theLetter, setTheLetter] = useState(""),
@@ -466,6 +464,7 @@ export const Donors = () => {
             if (thetoken !== "Token not Set") {
                let temp = window.location.href.toString().split("/");
                let rest = temp[temp.length - 1].toString();
+               setCoAmount(rest.toString().replace("lifetime", ""));
                setTitle(rest);
                setOldKey(rest);
                //rest attribute being sent is url REST to specify which grp returned
@@ -494,9 +493,31 @@ export const Donors = () => {
       });
    }, [thetoken]);
 
+   let MyToastBody = `
+        <ul>
+        <li>
+            This page contains the list of donors who have
+            generously contributed \$${coAmount} over a lifetime
+        </li>
+        <li>
+            To reduce list but first letter only use 'Limit By
+            Letter'
+            </li>
+            <li>
+        Up/Down Arrows re-oder List for displayc
+        </li>
+        <li>
+        This is in demo mode so changes will not persist
+        </li>
+        <ul>
+        `;
+
+   let MyToastTitle = `Donors organized by monetary value
+`;
+
    return (
       <div className='appBody'>
-         <h4>Donors by Monetary classification</h4>
+         <h4>Donors Lifetime ${coAmount}</h4>
          <ButtonGroup size='sm' color='primary'>
             <Button color='primary' onClick={() => toastToggle()}>
                Info
@@ -505,15 +526,11 @@ export const Donors = () => {
                Add New Donor
             </Button>
          </ButtonGroup>
-         <div className={"p-1 rounded " + toastVisibility}>
-            <Toast style={{ marginTop: 25 }}>
-               <ToastHeader>CMS Users</ToastHeader>
-               <ToastBody>
-                  This controls the CMS user administration for this
-                  application.
-               </ToastBody>
-            </Toast>
+
+         <div className={toastVisibility}>
+            <MyToast title={MyToastTitle} body={MyToastBody} />
          </div>
+
          <ModalAddDonor
             letChange={letChange}
             searchLetter={searchLetter}
@@ -524,12 +541,12 @@ export const Donors = () => {
             addDonorObj={addDonorObj}
          />
 
-         <div id='rendered' className={renderClass}>
-            <div className='donors__edit__list-title flex_container_row'>
-               <div className='donors__edit__title-box' id='title_box'>
-                  <div style={{ display: titleTxtDisplay }}>{title}</div>
-                  <div style={{ display: titleInputDisplay }}>
-                     <Col md={4}>
+         <div id='rendered' className='globalShad'>
+            <Table style={{ marginBottom: -8 }}>
+               <tr className='tableHeader'>
+                  <td>
+                     <div style={{ display: titleTxtDisplay }}>{title}</div>
+                     <div style={{ display: titleInputDisplay }}>
                         <InputGroup>
                            <Input
                               bsSize='sm'
@@ -542,45 +559,51 @@ export const Donors = () => {
                               </Button>
                            </InputGroupAddon>
                         </InputGroup>
-                     </Col>
-                  </div>
-               </div>
+                     </div>
+                  </td>
+                  <td style={{ width: 20 }}>
+                     <div
+                        style={{ display: titleInputDisplay }}
+                        className='buttonLG dgroup'
+                        onClick={cancelGroup}
+                     >
+                        &#8635;
+                     </div>
+                     <div
+                        style={{ display: titleTxtDisplay }}
+                        className='buttonLG dgroup'
+                        onClick={editGroup.bind(this)}
+                     >
+                        <i
+                           className='fa fa-edit dgroup'
+                           aria-hidden='true'
+                           onClick={editGroup.bind(this)}
+                        ></i>
+                     </div>
+                  </td>
+                  <td style={{ width: 20 }}>
+                     <div
+                        className='buttonLG dgroup'
+                        onClick={deleteGroup.bind(this)}
+                     >
+                        <i
+                           className='fa fa-trash dgroup'
+                           aria-hidden='true'
+                           onClick={deleteGroup.bind(this)}
+                        ></i>
+                     </div>
 
-               <div
-                  style={{ display: titleInputDisplay }}
-                  className='buttonLG dgroup'
-                  onClick={cancelGroup}
-               >
-                  &#8635;
-               </div>
-               <div
-                  style={{ display: titleTxtDisplay }}
-                  className='buttonLG dgroup'
-                  onClick={editGroup.bind(this)}
-               >
-                  <i
-                     className='fa fa-edit dgroup'
-                     aria-hidden='true'
-                     onClick={editGroup.bind(this)}
-                  ></i>
-               </div>
-               <div
-                  className='buttonLG dgroup'
-                  onClick={deleteGroup.bind(this)}
-               >
-                  <i
-                     className='fa fa-trash dgroup'
-                     aria-hidden='true'
-                     onClick={deleteGroup.bind(this)}
-                  ></i>
-               </div>
-
-               <button className='save startHid' id='edit_dcat'></button>
-            </div>
+                     <button className='save startHid' id='edit_dcat'></button>
+                  </td>
+               </tr>
+            </Table>
          </div>
+
+         {/* Table */}
+
          <div className='globalShad'>
             <Table striped>
-               <tr style={{ backgroundColor: "#bdddff" }}>
+               <tr className='tableHeader'>
                   <th>
                      <i
                         aria-hidden='true'
@@ -620,8 +643,4 @@ export const Donors = () => {
          </div>
       </div>
    );
-};
-
-const adr = {
-   marginRight: "10px",
 };

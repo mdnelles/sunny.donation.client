@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getDonorCats, updateCounters } from "./DonorFunctions";
 import { sizeSideBar } from "./_sharedFunctions";
-//import { ModalUploadCsv } from './ModalUploadCsv'
+import { MyToast } from "./widgets/MyToast";
 import localForage from "localforage";
 import {
    Col,
@@ -164,19 +164,20 @@ export const DonorCats = () => {
             <Button color='primary' onClick={() => toastToggle()}>
                Info
             </Button>
-            <Button color='primary' onClick={() => toggle()}>
-               Add User
-            </Button>
          </ButtonGroup>
          <div className={"p-1 rounded " + toastVisibility}>
-            <Toast style={{ marginTop: 25 }}>
-               <ToastHeader>Donor Categories</ToastHeader>
-               <ToastBody>
+            <MyToast
+               title='Donor Categories'
+               body='
+               <ul>
+               <li>
                   DonorCats are grouped in categories based on monetary
-                  contributions. You can click the edit icon in each box to
-                  query respectively.
-               </ToastBody>
-            </Toast>
+                  contributions. 
+               </li>
+               <li>
+                  You can click the edit icon in each box to query respectively
+               </li>'
+            />
          </div>
          <br />
          <div className='globalShad'>

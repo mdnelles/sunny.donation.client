@@ -5,12 +5,12 @@ import {
    removePlayList,
    removeLayout,
 } from "./PlayListFunctions";
-import { sizeSideBar } from "./_sharedFunctions";
+import { MyToast } from "./widgets/MyToast";
 import { ModalAddPlayList } from "./ModalAddPlayList";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import localForage from "localforage";
-import { Spinner } from "reactstrap";
+import { Button, ButtonGroup, Spinner, Table } from "reactstrap";
 
 const Loading = (props) => {
    return (
@@ -25,29 +25,27 @@ const Loading = (props) => {
 
 const Layout = (props) => {
    return (
-      <div
-         className={
-            "flex_container_row header_back pad5 marginRight " + props.bgc
-         }
-      >
-         <div className='txt_div flex-3 font-gray leftpad15'>{props.title}</div>
-         <div className='txt_div font-gray flex-2'>{props.layout}</div>
-         <div className='txt_div font-gray flex-3'>{props.asset}</div>
-         <div className='txt_div font-gray flex-1 marginRight'>
-            <div
-               className='btn deleteBtn visible'
-               id={"j-" + props.id}
-               onClick={props.removeLayoutStart.bind(this)}
-            >
-               <i
-                  aria-hidden='true'
-                  className='fa fa-trash-o deleteBtn'
-                  id={"i-" + props.id}
+      <React.Fragment>
+         <tr key={props.key}>
+            <td>{props.title}</td>
+            <td>{props.layout}</td>
+            <td>{props.asset}</td>
+            <td>
+               <div
+                  className='btn deleteBtn visible'
+                  id={"j-" + props.id}
                   onClick={props.removeLayoutStart.bind(this)}
-               ></i>
-            </div>
-         </div>
-      </div>
+               >
+                  <i
+                     aria-hidden='true'
+                     className='fa fa-trash-o deleteBtn'
+                     id={"i-" + props.id}
+                     onClick={props.removeLayoutStart.bind(this)}
+                  ></i>
+               </div>
+            </td>
+         </tr>
+      </React.Fragment>
    );
 };
 
@@ -68,39 +66,36 @@ const Layouts = (props) => {
 /////////////////// playlist components
 const PlayList = (props) => {
    return (
-      <div
-         className={
-            "flex_container_row flex_container_row no-shrink pad5 marginRight " +
-            props.bgc
-         }
-      >
-         <div className='txt_div font-gray flex-3 leftpad15'>{props.name}</div>
-         <div className='txt_div font-gray flex-3'>{props.author} </div>
-         <div className='txt_div font-gray flex-2'>{props.startDate}</div>
-         <div className='txt_div font-gray flex-1 '>
-            <Link to={"/edit_playlist/" + props.id}>
-               <div className='btn editBtn' id={"edit-" + props.id}>
+      <React.Fragment>
+         <tr key={props.key}>
+            <td>{props.name}</td>
+            <td>{props.author}</td>
+            <td>{props.startDate}</td>
+            <td>
+               <Link to={"/edit_playlist/" + props.id}>
+                  <div className='btn editBtn' id={"edit-" + props.id}>
+                     <i
+                        aria-hidden='true'
+                        className='fa fa-pencil-square-o editd editBtnIcon'
+                     ></i>
+                  </div>
+               </Link>
+
+               <div
+                  className='btn deleteBtn visible'
+                  id={"j-" + props.id}
+                  onClick={props.removePlayListStart.bind(this)}
+               >
                   <i
                      aria-hidden='true'
-                     className='fa fa-pencil-square-o editd editBtnIcon'
+                     className='fa fa-trash-o deleteBtn'
+                     id={"i-" + props.id}
+                     onClick={props.removePlayListStart.bind(this)}
                   ></i>
                </div>
-            </Link>
-
-            <div
-               className='btn deleteBtn visible'
-               id={"j-" + props.id}
-               onClick={props.removePlayListStart.bind(this)}
-            >
-               <i
-                  aria-hidden='true'
-                  className='fa fa-trash-o deleteBtn'
-                  id={"i-" + props.id}
-                  onClick={props.removePlayListStart.bind(this)}
-               ></i>
-            </div>
-         </div>
-      </div>
+            </td>
+         </tr>
+      </React.Fragment>
    );
 };
 
@@ -123,6 +118,7 @@ export const PlayLists = () => {
    const [playListsArr, setPlayListsArr] = useState([]),
       [layoutsArr, setLayoutsArr] = useState([]),
       [thetoken, setThetoken] = useState("Token not Set"),
+      [toastVisibility, setToastVisibility] = useState("displayNone"),
       [msgVisible, setMsgVisible] = useState("visible");
 
    const removePlayListStart = (e) => {
@@ -175,10 +171,18 @@ export const PlayLists = () => {
       return arr;
    };
 
+   const toggle = () => {
+      //setModal(!modal);
+   };
+
+   const toastToggle = () => {
+      toastVisibility === "displayNone"
+         ? setToastVisibility("displayBlock")
+         : setToastVisibility("displayNone");
+   };
+
    // on page load / componentDidMount
    useEffect(() => {
-      window.addEventListener("resize", sizeSideBar);
-      sizeSideBar();
       localForage.getItem("token", function (err, startToken) {
          setThetoken(startToken);
          setTimeout(() => {
@@ -202,39 +206,70 @@ export const PlayLists = () => {
    }, [thetoken]);
 
    return (
-      <div id='main'>
+      <div className='appBody'>
+         <h4>Playlists</h4>
+         <ButtonGroup size='sm' color='primary'>
+            <Button color='primary' onClick={() => toastToggle()}>
+               Info
+            </Button>
+            <Button color='primary'>Add Playlist</Button>
+            <Button color='primary'>Add Layout</Button>
+         </ButtonGroup>
+         <div className={"p-1 rounded " + toastVisibility}>
+            <MyToast
+               title='Playlist'
+               body='This controls the CMS user administration for this
+                  application.'
+            />
+         </div>
          <ModalAddPlayList thetoken={thetoken} />
 
          <br />
          <h5>Play Lists</h5>
-         <div className='donors__edit__table-header flex_container_row no-shrink pad5'>
-            <div className='txt_div  font-white flex-3 leftpad15'>Playlist</div>
-            <div className='txt_div font-white flex-3'>Author </div>
-            <div className='txt_div font-white  flex-2'>StartDate</div>
-            <div className='txt_div font-white  flex-1'></div>
-         </div>
 
-         <Playlists
-            playListsArr={playListsArr}
-            removePlayListStart={removePlayListStart}
-            thetoken={thetoken}
-         />
+         <div className='globalShad'>
+            <Table striped>
+               <thead>
+                  <tr className='tableHeader'>
+                     <th>Playlist</th>
+                     <th>Author</th>
+                     <th>Start Date</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <Playlists
+                     playListsArr={playListsArr}
+                     removePlayListStart={removePlayListStart}
+                     thetoken={thetoken}
+                  />
+               </tbody>
+            </Table>
+         </div>
          <div style={spacer} />
          <Loading msgVisible={msgVisible} />
 
          <h5>Layouts</h5>
-         <div className='donors__edit__table-header flex_container_row no-shrink'>
-            <div className='txt_div  font-white flex-3 leftpad15'>Title</div>
-            <div className='txt_div font-white flex-3'>Layout</div>
-            <div className='txt_div font-white  flex-2'>Asset</div>
-            <div className='txt_div font-white  flex-1'></div>
+         <div className='globalShad'>
+            <Table striped>
+               <thead>
+                  <tr className='tableHeader'>
+                     <th>Title</th>
+                     <th>Layout</th>
+                     <th>Asset</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <Layouts
+                     layoutsArr={layoutsArr}
+                     removeLayoutStart={removeLayoutStart}
+                     thetoken={thetoken}
+                  />
+               </tbody>
+            </Table>
+            <Loading msgVisible={msgVisible} />
          </div>
-         <Layouts
-            layoutsArr={layoutsArr}
-            removeLayoutStart={removeLayoutStart}
-            thetoken={thetoken}
-         />
-         <Loading msgVisible={msgVisible} />
       </div>
    );
 };

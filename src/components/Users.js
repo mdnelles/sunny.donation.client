@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getUsers, removeUser } from "./UserFunctions";
 import { ModalAddUser } from "./ModalAddUser";
+import { MyToast } from "./widgets/MyToast";
 import localForage from "localforage";
-import {
-   Button,
-   ButtonGroup,
-   Spinner,
-   Table,
-   Toast,
-   ToastBody,
-   ToastHeader,
-} from "reactstrap";
+import { Button, ButtonGroup, Spinner, Table } from "reactstrap";
 
 const Userow = (props) => {
    return (
@@ -156,13 +149,11 @@ export const Users = () => {
             </Button>
          </ButtonGroup>
          <div className={"p-1 rounded " + toastVisibility}>
-            <Toast style={{ marginTop: 25 }}>
-               <ToastHeader>CMS Users</ToastHeader>
-               <ToastBody>
-                  This controls the CMS user administration for this
-                  application.
-               </ToastBody>
-            </Toast>
+            <MyToast
+               title='CMS USERS'
+               body='This controls the CMS user administration for this
+                  application.'
+            />
          </div>
          <br />
          <div className='globalShad'>
