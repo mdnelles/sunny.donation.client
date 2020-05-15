@@ -56,6 +56,14 @@ const AddUserForm = (props) => {
             admin: 1,
             bgc: "dummy",
          };
+
+         // remove following 2 lines if not in demo mode
+         props.toggle();
+         props.addUserStart(newUser);
+         {
+            /* 
+            // comment out for demo
+            // to reverse 1) uncomment - 2) remove props.addUserStart(newUser); from above
          localForage
             .getItem("token", function (err, theToken) {
                register(newUser, theToken)
@@ -80,6 +88,8 @@ const AddUserForm = (props) => {
                alert("Error: no token - not authorized");
                window.location.href = "/"; // no token
             });
+         */
+         }
       }
    }
 

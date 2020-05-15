@@ -543,59 +543,66 @@ export const Donors = () => {
 
          <div id='rendered' className='globalShad'>
             <Table style={{ marginBottom: -8 }}>
-               <tr className='tableHeader'>
-                  <td>
-                     <div style={{ display: titleTxtDisplay }}>{title}</div>
-                     <div style={{ display: titleInputDisplay }}>
-                        <InputGroup>
-                           <Input
-                              bsSize='sm'
-                              value={title}
-                              onChange={(event) => setTitle(event.target.value)}
-                           />
-                           <InputGroupAddon addonType='append'>
-                              <Button color='success' onClick={updKey}>
-                                 update
-                              </Button>
-                           </InputGroupAddon>
-                        </InputGroup>
-                     </div>
-                  </td>
-                  <td style={{ width: 20 }}>
-                     <div
-                        style={{ display: titleInputDisplay }}
-                        className='buttonLG dgroup'
-                        onClick={cancelGroup}
-                     >
-                        &#8635;
-                     </div>
-                     <div
-                        style={{ display: titleTxtDisplay }}
-                        className='buttonLG dgroup'
-                        onClick={editGroup.bind(this)}
-                     >
-                        <i
-                           className='fa fa-edit dgroup'
-                           aria-hidden='true'
+               <thead>
+                  <tr className='tableHeader'>
+                     <td>
+                        <div style={{ display: titleTxtDisplay }}>{title}</div>
+                        <div style={{ display: titleInputDisplay }}>
+                           <InputGroup>
+                              <Input
+                                 bsSize='sm'
+                                 value={title}
+                                 onChange={(event) =>
+                                    setTitle(event.target.value)
+                                 }
+                              />
+                              <InputGroupAddon addonType='append'>
+                                 <Button color='success' onClick={updKey}>
+                                    update
+                                 </Button>
+                              </InputGroupAddon>
+                           </InputGroup>
+                        </div>
+                     </td>
+                     <td style={{ width: 20 }}>
+                        <div
+                           style={{ display: titleInputDisplay }}
+                           className='buttonLG dgroup'
+                           onClick={cancelGroup}
+                        >
+                           &#8635;
+                        </div>
+                        <div
+                           style={{ display: titleTxtDisplay }}
+                           className='buttonLG dgroup'
                            onClick={editGroup.bind(this)}
-                        ></i>
-                     </div>
-                  </td>
-                  <td style={{ width: 20 }}>
-                     <div
-                        className='buttonLG dgroup'
-                        onClick={deleteGroup.bind(this)}
-                     >
-                        <i
-                           className='fa fa-trash dgroup'
-                           aria-hidden='true'
+                        >
+                           <i
+                              className='fa fa-edit dgroup'
+                              aria-hidden='true'
+                              onClick={editGroup.bind(this)}
+                           ></i>
+                        </div>
+                     </td>
+                     <td style={{ width: 20 }}>
+                        <div
+                           className='buttonLG dgroup'
                            onClick={deleteGroup.bind(this)}
-                        ></i>
-                     </div>
+                        >
+                           <i
+                              className='fa fa-trash dgroup'
+                              aria-hidden='true'
+                              onClick={deleteGroup.bind(this)}
+                           ></i>
+                        </div>
 
-                     <button className='save startHid' id='edit_dcat'></button>
-                  </td>
-               </tr>
+                        <button
+                           className='save startHid'
+                           id='edit_dcat'
+                        ></button>
+                     </td>
+                  </tr>
+               </thead>
             </Table>
          </div>
 
@@ -603,40 +610,44 @@ export const Donors = () => {
 
          <div className='globalShad'>
             <Table striped>
-               <tr className='tableHeader'>
-                  <th>
-                     <i
-                        aria-hidden='true'
-                        className='fa fa-arrow-up headerr_link'
-                        style={{ opactiy: 0.5 }}
-                     ></i>
-                  </th>
-                  <th>
-                     <i
-                        aria-hidden='true'
-                        className='fa fa-arrow-down'
-                        style={{ opactiy: 0.5 }}
-                     ></i>
-                  </th>
-                  <th>Name</th>
-                  <th>Letter</th>
-                  <th>Delete</th>
-                  <th>Edit</th>
-               </tr>
-               <Alldonors
-                  arrowVisClass={arrowVisClass}
-                  key={uuidv4()}
-                  donorArr={donorArr}
-                  ArrowClick={ArrowClick}
-                  delDon={delDon}
-                  editDon={editDon}
-                  setTxtLetter={setTxtLetter}
-                  setTxtDonor={setTxtDonor}
-                  cancel={cancel}
-                  saveEdit={saveEdit}
-                  searchLetter={searchLetter}
-                  thetoken={thetoken}
-               />
+               <thead>
+                  <tr className='tableHeader'>
+                     <th>
+                        <i
+                           aria-hidden='true'
+                           className='fa fa-arrow-up headerr_link'
+                           style={{ opactiy: 0.5 }}
+                        ></i>
+                     </th>
+                     <th>
+                        <i
+                           aria-hidden='true'
+                           className='fa fa-arrow-down'
+                           style={{ opactiy: 0.5 }}
+                        ></i>
+                     </th>
+                     <th>Name</th>
+                     <th>Letter</th>
+                     <th>Delete</th>
+                     <th>Edit</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <Alldonors
+                     arrowVisClass={arrowVisClass}
+                     key={uuidv4()}
+                     donorArr={donorArr}
+                     ArrowClick={ArrowClick}
+                     delDon={delDon}
+                     editDon={editDon}
+                     setTxtLetter={setTxtLetter}
+                     setTxtDonor={setTxtDonor}
+                     cancel={cancel}
+                     saveEdit={saveEdit}
+                     searchLetter={searchLetter}
+                     thetoken={thetoken}
+                  />
+               </tbody>
             </Table>
 
             <Loading msgVisible={msgVisible} />

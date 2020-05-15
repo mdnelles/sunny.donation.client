@@ -60,7 +60,12 @@ export const MyNavbar = () => {
                </NavbarBrand>
                <NavbarToggler onClick={toggle} />
                <Collapse isOpen={isOpen} navbar>
-                  <Nav className='mr-auto' navbar bg='light'>
+                  <Nav
+                     className='mr-auto'
+                     navbar
+                     bg='light'
+                     style={{ fontSize: "1.5em" }}
+                  >
                      <NavItem>
                         <NavLink href='/donor_cats'>Donors</NavLink>
                      </NavItem>
@@ -68,7 +73,7 @@ export const MyNavbar = () => {
                         <NavLink href='/playlists'>Playlists</NavLink>
                      </NavItem>
                      <NavItem>
-                        <NavLink href='/users'>User</NavLink>
+                        <NavLink href='/users'>Users</NavLink>
                      </NavItem>
                      <NavItem>
                         <NavLink href='/media'>Media</NavLink>

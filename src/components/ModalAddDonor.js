@@ -139,22 +139,24 @@ export const ModalAddDonor = (props) => {
          <Row>
             <Col sm='12' md={{ size: 4, offset: 3 }}>
                <table>
-                  <tr>
-                     <td nowrap>
-                        <span style={{ fontSize: "1.2em", marginRight: 10 }}>
-                           Limit By Letter
-                        </span>
-                     </td>
-                     <td>
-                        <Input
-                           style={{ width: 40 }}
-                           type='text'
-                           id='live_letter'
-                           value={props.theLetter}
-                           onChange={props.letChange.bind(this)}
-                        />
-                     </td>
-                  </tr>
+                  <thead>
+                     <tr>
+                        <td>
+                           <span style={{ fontSize: "1.2em", marginRight: 10 }}>
+                              Limit By Letter
+                           </span>
+                        </td>
+                        <td>
+                           <Input
+                              style={{ width: 40 }}
+                              type='text'
+                              id='live_letter'
+                              value={props.theLetter}
+                              onChange={props.letChange.bind(this)}
+                           />
+                        </td>
+                     </tr>
+                  </thead>
                </table>
             </Col>
          </Row>

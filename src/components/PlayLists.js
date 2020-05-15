@@ -121,6 +121,33 @@ export const PlayLists = () => {
       [toastVisibility, setToastVisibility] = useState("displayNone"),
       [msgVisible, setMsgVisible] = useState("visible");
 
+   const [modal, setModal] = useState(false);
+   const [modalTitle, setModalTitle] = useState(false);
+   const [vis1, setVis1] = useState("none");
+   const [vis2, setVis2] = useState("none");
+   const [vis3, setVis3] = useState("none");
+
+   const pretoggle = (e) => {
+      setVis1("none");
+      setVis2("none");
+      setVis3("none");
+
+      if (e.target.id === "addPlaylist") {
+         setVis1("block");
+         setModalTitle("Add Playlist");
+      } else if (e.target.id === "addLayout") {
+         setVis2("block");
+         setModalTitle("Add Layout");
+      } else if (e.target.id === "howTo") {
+         setVis3("block");
+         setModalTitle("How To");
+      }
+
+      setModal(!modal);
+   };
+
+   const toggle = () => setModal(!modal);
+
    const removePlayListStart = (e) => {
       e.stopPropagation();
       if (window.confirm("Are you sure you want to delete this?")) {
@@ -171,10 +198,6 @@ export const PlayLists = () => {
       return arr;
    };
 
-   const toggle = () => {
-      //setModal(!modal);
-   };
-
    const toastToggle = () => {
       toastVisibility === "displayNone"
          ? setToastVisibility("displayBlock")
@@ -222,7 +245,14 @@ export const PlayLists = () => {
                   application.'
             />
          </div>
-         <ModalAddPlayList thetoken={thetoken} />
+         <ModalAddPlayList
+            thetoken={thetoken}
+            modalTitle={modalTitle}
+            pretoggle={pretoggle}
+            vis1={vis1}
+            vis2={vis2}
+            vis3={vis3}
+         />
 
          <br />
          <h5>Play Lists</h5>

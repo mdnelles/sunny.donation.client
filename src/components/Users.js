@@ -96,6 +96,9 @@ export const Users = () => {
 
    const removeUserStart = (theUuid) => {
       if (window.confirm("Are you sure you want to delete this?")) {
+         {
+            /* 
+         // not storing changes in database in demo version so commented out
          if (theUuid !== undefined) {
             localForage
                .getItem("token", (err, theToken) => {
@@ -113,6 +116,10 @@ export const Users = () => {
          }
       } else {
          return false;
+      }
+         */
+         }
+         setUsers(users.filter((user) => user.id !== theUuid));
       }
    };
 
@@ -137,6 +144,13 @@ export const Users = () => {
          });
    }, []);
 
+   let toastBody = `
+   <ul>
+   <li>This controls the CMS user administration for this application.</li>
+   <li><span style="color:red">Changes made by <b>demo user</b> will no persist</span></li>
+   </ul>
+   `;
+
    return (
       <div className='appBody'>
          <h4>CMS Users</h4>
@@ -149,11 +163,7 @@ export const Users = () => {
             </Button>
          </ButtonGroup>
          <div className={"p-1 rounded " + toastVisibility}>
-            <MyToast
-               title='CMS USERS'
-               body='This controls the CMS user administration for this
-                  application.'
-            />
+            <MyToast title='CMS USERS' body={toastBody} />
          </div>
          <br />
          <div className='globalShad'>
