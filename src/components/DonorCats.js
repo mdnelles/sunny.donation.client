@@ -26,7 +26,9 @@ const Loading = (props) => {
       </div>
    );
 };
-
+const go = (loc) => {
+   window.location.href = "/getdonors/" + loc;
+};
 const DonorRow = (props) => {
    let tid = props.title,
       actual = ""; //.replace(/\D/g,'');
@@ -53,7 +55,17 @@ const DonorRow = (props) => {
          <td>{props.date}</td>
          <td>Admin</td>
          <td>
-            <Button color='primary'>Donor List </Button>
+            <div
+               className='buttonLG dgroup'
+               id={tid}
+               onClick={(event) => go(event.target.id)}
+            >
+               <i
+                  className='fa fa-edit dgroup'
+                  id={tid}
+                  onClick={(event) => go(event.target.id)}
+               ></i>
+            </div>
          </td>
       </tr>
    );
@@ -174,9 +186,9 @@ export const DonorCats = () => {
                      <th>Category</th>
                      <th>Actual</th>
                      <th>Count</th>
-                     <th>Time</th>
+                     <th>eDate</th>
                      <th>Admin</th>
-                     <th>Delete</th>
+                     <th>View</th>
                   </tr>
                </thead>
                <tbody>

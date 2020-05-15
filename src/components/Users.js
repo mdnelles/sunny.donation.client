@@ -19,16 +19,21 @@ const Userow = (props) => {
          <td>{props.last_name}</td>
          <td>{props.email}</td>
          <td>
-            <Button
-               color='danger'
-               size='sm'
-               id={props.uuid}
+            <div
                onClick={() => {
                   props.removeUserStart(props.uuid);
                }}
+               className='btn deleteBtn'
             >
-               delete
-            </Button>
+               <i
+                  className='fa fa-trash dgroup'
+                  aria-hidden='true'
+                  id={props.uuid}
+                  onClick={() => {
+                     props.removeUserStart(props.uuid);
+                  }}
+               ></i>
+            </div>
          </td>
       </tr>
    );

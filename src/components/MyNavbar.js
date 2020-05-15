@@ -27,6 +27,9 @@ export const MyNavbar = () => {
       let iBottom = c.bottom;
       setMenuTop(iBottom);
       setMenuLeft(iLeft - 10);
+      setTimeout(() => {
+         setMenuDisplayClass("displayNone");
+      }, 3000);
    };
    const logOut = (e) => {
       e.preventDefault();

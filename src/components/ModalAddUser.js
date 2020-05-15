@@ -153,7 +153,7 @@ export const ModalAddUser = (props) => {
             <ModalHeader toggle={() => props.toggle()}> Add User</ModalHeader>
             <AddUserForm
                addUserStart={props.addUserStart}
-               toggle={props.toggle}
+               toggle={() => props.toggle()}
             />
             <ModalFooter>
                <Button color='danger' onClick={() => props.toggle()}>
