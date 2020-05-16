@@ -71,7 +71,6 @@ export const ModalAddPlayList = (props) => {
                id='howTo'
                onClick={(event) => props.pretoggle(event)}
             >
-               {" "}
                &#x2b; How To
             </div>
          </div>
