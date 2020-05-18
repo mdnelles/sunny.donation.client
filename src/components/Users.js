@@ -3,6 +3,7 @@ import { getUsers, removeUser } from "./UserFunctions";
 import { ModalAddUser } from "./ModalAddUser";
 import { MyToast } from "./widgets/MyToast";
 import localForage from "localforage";
+import { restoreData } from "./DbaFunctions";
 import { Button, ButtonGroup, Spinner, Table } from "reactstrap";
 
 const Userow = (props) => {
@@ -134,6 +135,9 @@ export const Users = () => {
             getUsers(theToken).then((res) => {
                setMsgVisible("hid");
                setUsers(res);
+               restoreData(theToken).then(() => {
+                  //datarestored
+               });
             });
          })
          .catch((err) => {

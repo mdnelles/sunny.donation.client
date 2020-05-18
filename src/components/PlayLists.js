@@ -12,6 +12,12 @@ import { v4 as uuidv4 } from "uuid";
 import localForage from "localforage";
 import { Button, ButtonGroup, Spinner, Table } from "reactstrap";
 
+const PlaceholderWhileLoading = () => {
+   {
+      return <React.Fragment></React.Fragment>;
+   }
+};
+
 const Loading = (props) => {
    return (
       <div className={props.msgVisible}>
@@ -25,8 +31,8 @@ const Loading = (props) => {
 
 const Layout = (props) => {
    return (
-      <React.Fragment>
-         <tr key={props.key}>
+      <React.Fragment key={"k" + props.kk}>
+         <tr>
             <td>{props.title}</td>
             <td>{props.layout}</td>
             <td>{props.asset}</td>
@@ -52,7 +58,8 @@ const Layout = (props) => {
 const Layouts = (props) => {
    return props.layoutsArr.map((layout) => (
       <Layout
-         key={uuidv4()}
+         key={props.id}
+         kk={props.id}
          removeLayoutStart={props.removeLayoutStart}
          bgc={layout.bgc}
          title={layout.title}
@@ -67,8 +74,12 @@ const Layouts = (props) => {
 const PlayList = (props) => {
    return (
       <React.Fragment>
-         <tr key={props.key}>
-            <td>{props.name}</td>
+         <tr key={props.kk}>
+            <td>
+               {props.name}
+               <br />
+               {props.kk}
+            </td>
             <td>{props.author}</td>
             <td>{props.startDate}</td>
             <td>
@@ -100,9 +111,13 @@ const PlayList = (props) => {
 };
 
 const Playlists = (props) => {
+   props.playListsArr.forEach((e) => {
+      e.key = uuidv4();
+   });
    return props.playListsArr.map((playlist) => (
       <PlayList
-         key={uuidv4()}
+         kk={playlist.playlist_key.toString()}
+         key={playlist.playlist_key.toString()}
          id={playlist.id}
          name={playlist.name}
          author={playlist.author}
@@ -114,18 +129,20 @@ const Playlists = (props) => {
    ));
 };
 
+let theLayouts;
+
 export const PlayLists = () => {
    const [playListsArr, setPlayListsArr] = useState([]),
       [layoutsArr, setLayoutsArr] = useState([]),
       [thetoken, setThetoken] = useState("Token not Set"),
       [toastVisibility, setToastVisibility] = useState("displayNone"),
-      [msgVisible, setMsgVisible] = useState("visible");
-
-   const [modal, setModal] = useState(false);
-   const [modalTitle, setModalTitle] = useState(false);
-   const [vis1, setVis1] = useState("none");
-   const [vis2, setVis2] = useState("none");
-   const [vis3, setVis3] = useState("none");
+      [msgVisible, setMsgVisible] = useState("visible"),
+      [modal, setModal] = useState(false),
+      [gotData, setGotData] = useState(false),
+      [modalTitle, setModalTitle] = useState(false),
+      [vis1, setVis1] = useState("none"),
+      [vis2, setVis2] = useState("none"),
+      [vis3, setVis3] = useState("none");
 
    const pretoggle = (e) => {
       setVis1("none");
@@ -169,9 +186,7 @@ export const PlayLists = () => {
    const removeLayoutStart = (e) => {
       e.stopPropagation();
       if (window.confirm("Are you sure you want to delete this?")) {
-         console.log("LAYOUT -- e.target.id = " + e.target.id);
          var [, id] = e.target.id.toString().split("-");
-         console.log("attempting to remove id:" + id);
          removeLayout(id, thetoken).then(() => {
             setLayoutsArr(
                doStripe(
@@ -206,27 +221,51 @@ export const PlayLists = () => {
 
    // on page load / componentDidMount
    useEffect(() => {
-      localForage.getItem("token", function (err, startToken) {
-         setThetoken(startToken);
-         setTimeout(() => {
-            if (thetoken !== "Token not Set") {
-               getLayouts(thetoken).then((res2) => {
-                  getPlayLists(thetoken).then((res1) => {
-                     setMsgVisible("hid");
-                     if (res2 !== undefined && res2 !== [] && res2 !== false) {
-                        res2 = doStripe(res2);
-                        setLayoutsArr(res2);
-                     }
-                     if (res1 !== undefined && res1 !== false && res1 !== []) {
-                        res1 = doStripe(res1);
-                        setPlayListsArr(res1);
-                     }
+      if (gotData === false) {
+         localForage.getItem("token", function (err, startToken) {
+            setThetoken(startToken);
+            setTimeout(() => {
+               if (thetoken !== "Token not Set") {
+                  getLayouts(thetoken).then((res2) => {
+                     getPlayLists(thetoken).then((res1) => {
+                        setMsgVisible("hid");
+                        if (
+                           res2 !== undefined &&
+                           res2 !== [] &&
+                           res2 !== false
+                        ) {
+                           res2 = doStripe(res2);
+                           setLayoutsArr(res2);
+                        }
+                        if (
+                           res1 !== undefined &&
+                           res1 !== false &&
+                           res1 !== []
+                        ) {
+                           res1 = doStripe(res1);
+                           setPlayListsArr(res1);
+                        }
+                        setGotData(true);
+                     });
                   });
-               });
-            }
-         }, 100);
-      });
-   }, [thetoken]);
+               }
+            }, 100);
+         });
+      }
+   }, [thetoken, modal]);
+
+   {
+      layoutsArr !== undefined && layoutsArr.length > 1
+         ? (theLayouts = (
+              <Layouts
+                 layoutsArr={layoutsArr}
+                 removeLayoutStart={removeLayoutStart}
+                 thetoken={thetoken}
+                 key={uuidv4()}
+              />
+           ))
+         : (theLayouts = <PlaceholderWhileLoading />);
+   }
 
    return (
       <div className='appBody'>
@@ -235,20 +274,40 @@ export const PlayLists = () => {
             <Button color='primary' onClick={() => toastToggle()}>
                Info
             </Button>
-            <Button color='primary'>Add Playlist</Button>
-            <Button color='primary'>Add Layout</Button>
+            <Button
+               color='primary'
+               id='addPlaylist'
+               onClick={(event) => pretoggle(event)}
+            >
+               Add Playlist
+            </Button>
+            <Button
+               color='primary'
+               id='addLayout'
+               onClick={(event) => pretoggle(event)}
+            >
+               Add Layout
+            </Button>
+            <Button
+               color='primary'
+               id='howTo'
+               onClick={(event) => pretoggle(event)}
+            >
+               How To
+            </Button>
          </ButtonGroup>
          <div className={"p-1 rounded " + toastVisibility}>
             <MyToast
                title='Playlist'
-               body='This controls the CMS user administration for this
-                  application.'
+               body='This is Where playlist and layouts are made.  For more help use the HOW TO diagram.'
             />
          </div>
          <ModalAddPlayList
             thetoken={thetoken}
             modalTitle={modalTitle}
             pretoggle={pretoggle}
+            modal={modal}
+            toggle={toggle}
             vis1={vis1}
             vis2={vis2}
             vis3={vis3}
@@ -290,13 +349,7 @@ export const PlayLists = () => {
                      <th></th>
                   </tr>
                </thead>
-               <tbody>
-                  <Layouts
-                     layoutsArr={layoutsArr}
-                     removeLayoutStart={removeLayoutStart}
-                     thetoken={thetoken}
-                  />
-               </tbody>
+               <tbody>{theLayouts}</tbody>
             </Table>
             <Loading msgVisible={msgVisible} />
          </div>

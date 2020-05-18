@@ -28,7 +28,7 @@ export const Landing = () => {
    const [email, setEmail] = useState("test@test.com"),
       [password, setPassword] = useState("password"),
       [captchaKey, setCaptchaKey] = useState("na"),
-      [submitVisibleClass, setSubmitVisibleClass] = useState("displayBlock"),
+      [submitVisibleClass, setSubmitVisibleClass] = useState("displayNone"),
       [msg, setMsg] = useState("Enter valid credentials to proceed"),
       [spin, setSpin] = useState("visible");
 

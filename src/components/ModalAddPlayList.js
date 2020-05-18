@@ -4,13 +4,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { AddPlayListForm } from "./_forms/AddPlayListForm";
 import { AddLayoutForm } from "./_forms/AddLayoutForm";
 
-const bstyle = () => {
-   return {
-      backgroundColor: "#cccccc",
-      float: "right",
-   };
-};
-
 /////////////
 
 const AddPlaylist = (props) => {
@@ -43,37 +36,13 @@ const HowTo = (props) => {
 };
 
 export const ModalAddPlayList = (props) => {
+   console.log(props);
    return (
       <div>
          <div
             className='playlists__edit__add-playlist only-button flex_container_row no-shrink'
-            style={{ bstyle }}
-         >
-            <div
-               className='buttonGR'
-               id='addPlaylist'
-               onClick={(event) => props.pretoggle(event)}
-            >
-               &#x2b; Add Playlist
-            </div>
-            <div className='leftpad15'></div>
-            <div
-               className='buttonGR'
-               id='addLayout'
-               onClick={(event) => props.pretoggle(event)}
-            >
-               {" "}
-               &#x2b; Add Layout
-            </div>
-            <div className='leftpad15'></div>
-            <div
-               className='buttonGR'
-               id='howTo'
-               onClick={(event) => props.pretoggle(event)}
-            >
-               &#x2b; How To
-            </div>
-         </div>
+            style={{ backgroundColor: "#cccccc", float: "right" }}
+         ></div>
          <Modal isOpen={props.modal} toggle={props.toggle}>
             <ModalHeader toggle={props.toggle} thetoken={props.thetoken}>
                {" "}
