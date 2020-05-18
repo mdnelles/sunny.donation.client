@@ -12,6 +12,10 @@ import { getMedia, removeFile } from "./MediaFunctions";
 import localForage from "localforage";
 import { MyToast } from "./widgets/MyToast";
 
+var thisServer = window.location.href;
+var serverPath = global.config.routerPath;
+if (thisServer.includes("3000")) serverPath = global.config.devPath;
+
 const Mediarow = (props) => {
    let fType = "";
    if (props.name !== undefined) {
@@ -171,7 +175,7 @@ export const Media = () => {
       formData.append("files", file); // this is a state object set onChange
       formData.append("token", thetoken);
       formData.append("caller", "Mediajs.startUploadFile");
-      xhr.open("post", "/media/uploadfile", true);
+      xhr.open("post", serverPath + "/media/uploadfile", true);
 
       xhr.addEventListener("error", errorHandler, false);
       xhr.upload.addEventListener("progress", uploadProgressHandler, false);
