@@ -69,7 +69,7 @@ const Adonor = (props) => {
          <td>
             <div style={{ display: props.txtNamevs }}>{props.donorName}</div>
             <div style={{ display: inNamevs }}>
-               <input
+               <Input
                   type='text'
                   defaultValue={props.donorName}
                   id={"dn-" + props.id}
@@ -81,7 +81,8 @@ const Adonor = (props) => {
          <td>
             <div style={{ display: props.txtLettervs }}>{props.letter}</div>
             <div style={{ display: inLettervs }}>
-               <input
+               <Input
+                  style={{ width: 40 }}
                   type='text'
                   defaultValue={props.letter}
                   id={"dl-" + props.id}
@@ -464,7 +465,15 @@ export const Donors = () => {
             if (thetoken !== "Token not Set") {
                let temp = window.location.href.toString().split("/");
                let rest = temp[temp.length - 1].toString();
-               setCoAmount(rest.toString().replace("lifetime", ""));
+               setCoAmount(
+                  parseInt(rest.toString().replace("lifetime", ""))
+                     .toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "CND",
+                     })
+                     .replace("CND", "")
+                     .replace(".00", "")
+               );
                setTitle(rest);
                setOldKey(rest);
                //rest attribute being sent is url REST to specify which grp returned

@@ -181,3 +181,20 @@ export const getDBs = (theToken) => {
          return "Err: " + err;
       });
 };
+
+export const restoreData = (theToken) => {
+   return axios
+      .post(serverPath + "/dba/restore_data", {
+         na: "na",
+         token: theToken,
+         caller: "DbaFunctions.restoreData",
+      })
+      .then((res) => {
+         //console.log('Success DbaFunctions.getDBs -> ' + JSON.stringify(res.data))
+         return res.data;
+      })
+      .catch((err) => {
+         console.log("Error: DbaFunctions.restoreData " + err);
+         return "Err: " + err;
+      });
+};

@@ -35,7 +35,8 @@ const DonorRow = (props) => {
    if (props.title !== undefined) {
       actual = parseInt(props.title.toString().replace("lifetime", ""))
          .toLocaleString("en-US", { style: "currency", currency: "CND" })
-         .replace("CND", "");
+         .replace("CND", "")
+         .replace(".00", "");
    }
 
    let title = props.title
@@ -171,7 +172,7 @@ export const DonorCats = () => {
                body='
                <ul>
                <li>
-                  DonorCats are grouped in categories based on monetary
+                  Donor Categories are grouped in categories based on monetary
                   contributions. 
                </li>
                <li>
