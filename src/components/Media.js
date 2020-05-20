@@ -186,26 +186,28 @@ export const Media = () => {
    };
 
    const onChangeHandler = (event) => {
-      var mime = event.target.files[0].type;
-      if (event.target.files[0].size > 11000000) {
-         setAlertColor("danger");
-         setMsg("This file size is too big (10MB max)");
-         setUpVis("displayNone");
-      } else if (
-         mime === undefined ||
-         (!mime.includes("image") &&
-            !mime.includes("video") &&
-            !mime.includes("audio"))
-      ) {
-         setAlertColor("danger");
-         setMsg("Wrong filetype: must be Image, Audio or Video");
-         setUpVis("displayNone");
-      } else {
-         setAlertColor("success");
-         setMsg("File size is accpeted");
-         setFile(event.target.files[0]); // doing singe file at a time for AWS
-         setFileSize(event.target.files[0].size);
-         setUpVis("displayInLineBlock");
+      if (event.target.files[0] !== undefined) {
+         var mime = event.target.files[0].type;
+         if (event.target.files[0].size > 11000000) {
+            setAlertColor("danger");
+            setMsg("This file size is too big (10MB max)");
+            setUpVis("displayNone");
+         } else if (
+            mime === undefined ||
+            (!mime.includes("image") &&
+               !mime.includes("video") &&
+               !mime.includes("audio"))
+         ) {
+            setAlertColor("danger");
+            setMsg("Wrong filetype: must be Image, Audio or Video");
+            setUpVis("displayNone");
+         } else {
+            setAlertColor("success");
+            setMsg("File size is accpeted");
+            setFile(event.target.files[0]); // doing singe file at a time for AWS
+            setFileSize(event.target.files[0].size);
+            setUpVis("displayInLineBlock");
+         }
       }
    };
 
