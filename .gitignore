@@ -11,6 +11,8 @@
 # production
 /build
 
+/noobFiles
+
 # misc
 .DS_Store
 .env.local
